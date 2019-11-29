@@ -23,6 +23,8 @@ body
   display: flex
   .router
     height: 100%
+    flex: 1
     padding-top: 48px
+    padding-right: 32px
     box-sizing: border-box
 </style>
