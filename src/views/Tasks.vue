@@ -3,9 +3,34 @@
     .filters.card
       .title Фильтры
       .body
-
+        a-select.select(defaultvalue='lucy', style='width: 120px', @change='handleChange')
+          a-select-option(value='jack') Jack
+          a-select-option(value='lucy') Lucy
+        a-select.select(defaultvalue='lucy', style='width: 120px', @change='handleChange')
+          a-select-option(value='jack') Jack
+          a-select-option(value='lucy') Lucy
+        a-select.select(defaultvalue='lucy', style='width: 120px', @change='handleChange')
+          a-select-option(value='jack') Jack
+          a-select-option(value='lucy') Lucy
     .tasks.card
+      .task(v-for='(task, index) in tasks' @click='openTask(index)')
+        .name {{task.name}}
+        .deadline {{task.deadline}}
 </template>
+<script>
+export default {
+  methods: {
+    openTask(ind) {
+      this.$store.commit('openViewer', ind)
+    }
+  },
+  computed: {
+    tasks() {
+      return this.$store.state.tasks
+    }
+  }
+}
+</script>
 <style lang="sass" scoped>
 .tasks
   padding: 0 16px
@@ -21,8 +46,24 @@
       font-weigh: 600
       font-size: 12px
   .filters
-    
+    .body
+      margin-top: 16px
+      .select
+        margin-right: 16px
   .tasks
     margin-top: 48px
     flex: 1
+    .task
+      display: flex
+      height: 45px
+      padding: 0 16px
+      border-bottom: 1px solid #ecf2fb
+      justify-content: space-between
+      align-items: center
+      transition: background .3s
+      &:hover
+        background: #ecf2fb
+        cursor: pointer
+      &:last-child
+        border-bottom: 0px
 </style>

@@ -1,16 +1,20 @@
 <template lang='pug'>
   #app
     toolbar
+    task-viewer
     .main-cont
       sidebar
       .router
-        router-view
+        transition(mode='out-in' enter-active-class="animated fadeIn" leave-active-class="animated fadeOut")
+          router-view
 </template>
 <script>
 import Toolbar from '@/components/Toolbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
+import TaskViewer from '@/components/TaskViewer/index.vue'
+
 export default {
-  components: { Toolbar, Sidebar }
+  components: { Toolbar, Sidebar, TaskViewer }
 }
 </script>
 <style lang="sass">
