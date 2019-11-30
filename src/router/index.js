@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Tasks from '../views/Tasks.vue'
+import Process from '../views/Process.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -14,6 +15,11 @@ const routes = [
     path: '/tasks',
     name: 'tasks',
     component: Tasks
+  },
+  {
+    path: '/process',
+    name: 'process',
+    component: Process
   },
 ]
 

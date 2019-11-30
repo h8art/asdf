@@ -4,8 +4,11 @@
       i.material-icons dashboard
       span Дашборд
     router-link.menu-link(to='/tasks' tag='div')
-      i.material-icons work
+      i.material-icons view_list
       span Задачи
+    router-link.menu-link(to='/projects' tag='div')
+      i.material-icons work
+      span Проекты
     router-link.menu-link(to='/calendar' tag='div')
       i.material-icons calendar_today
       span Календарь
