@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    docViwerDrawer: false,
     tasks: [
       {
         name: "Название задачи",
@@ -38,6 +39,12 @@ export default new Vuex.Store({
     openViewer(state, taskIndex) {
       state.showTaskId = taskIndex
       state.showTask = true
+    },
+    openDocPreview(state) {
+      state.docViwerDrawer = true
+    },
+    closeDocViewer(state) {
+      state.docViwerDrawer = false
     }
   },
   actions: {
