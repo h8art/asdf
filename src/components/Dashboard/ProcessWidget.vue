@@ -1,7 +1,7 @@
 <template lang="pug">
   .tasks-widget
     .header
-      .title Задачи
+      .title Процессы
       .spacer
       .period
         .period-variant(:class='{ "active": period == 1 }' @click='period = 1') Сегодня
@@ -11,6 +11,10 @@
       .task(v-for='task in tasks')
         .name {{task.name}}
         .deadline {{task.deadline}}
+        a-button-group
+          a-button(size='small') Задачи
+          a-button(size='small') Таймлайн
+          a-button(size='small') Инфо
 </template>
 <script>
 export default {

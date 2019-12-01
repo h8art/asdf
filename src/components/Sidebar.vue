@@ -6,12 +6,12 @@
     router-link.menu-link(to='/tasks' tag='div')
       i.material-icons view_list
       span Задачи
-    router-link.menu-link(to='/projects' tag='div')
+    router-link.menu-link(to='/processes' tag='div')
       i.material-icons work
-      span Проекты
-    router-link.menu-link(to='/calendar' tag='div')
-      i.material-icons calendar_today
-      span Календарь
+      span Процессы
+    //- router-link.menu-link(to='/calendar' tag='div')
+    //-   i.material-icons calendar_today
+    //-   span Календарь
 </template>
 <style lang="sass" scoped>
 .sidebar

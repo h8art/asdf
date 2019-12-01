@@ -3,13 +3,16 @@
     stat.stat(v-for='item in stats' :title='item.title' :count='item.count' :all='item.all' :icon='item.icon')
     .tasks
       TasksWidget
-    .timeline
-      Timeline
+    .prc
+      ProcessWidget
+    //- .timeline
+    //-   Timeline
 </template>
 <script>
 import TasksWidget from './TasksWidget.vue'
 import Stat from './Stat.vue'
 import Timeline from './Timeline.vue'
+import ProcessWidget from './ProcessWidget.vue'
 
 export default {
   data() {
@@ -26,13 +29,13 @@ export default {
           count: 20,
           all: 32
         },{
-          title: "Задачи в работе",
-          icon: "/pending.svg",
+          title: "Просроченные задачи",
+          icon: "/failed.svg",
           count: 20,
           all: 32
         },{
-          title: "Задачи в работе",
-          icon: "/pending.svg",
+          title: "Горящие задачи",
+          icon: "/fire.svg",
           count: 20,
           all: 32
         },
@@ -42,7 +45,8 @@ export default {
   components: {
     Stat,
     TasksWidget,
-    Timeline
+    Timeline,
+    ProcessWidget
   }
 }
 </script>
@@ -50,14 +54,20 @@ export default {
 .dash
   padding: 0 16px
   display: grid
+  height: calc(100% - 48px)
   grid-template-rows: 140px 1fr 1fr 1fr
   grid-template-columns: 1fr 1fr 1fr 1fr
   grid-gap: 24px
-.tasks
+.prc
   grid-row-start: 2
   grid-column-start: 1
-  grid-row-end: 2
-  grid-column-end: 4
+  grid-row-end: 5
+  grid-column-end: 3
+.tasks
+  grid-row-start: 2
+  grid-column-start: 3
+  grid-row-end: 5
+  grid-column-end: 5
 .timeline
   grid-row-start: 2
   grid-column-start: 4
@@ -67,4 +77,5 @@ export default {
   width: 100%
 .row
   margin-top: 48px
+
 </style>
