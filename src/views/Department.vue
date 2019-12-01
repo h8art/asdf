@@ -51,15 +51,24 @@
 </template>
 <script>
 import DocPreview from '@/components/DocPreview'
+import differenceInDays from 'date-fns/differenceInDays'
 import _ from 'lodash'
 export default {
   components: { DocPreview },
   methods: {
-    getDep() {
-
+    getWidth(deadInd ) {
+      const task = this.process
+      if (deadInd) {
+        return Math.abs(differenceInDays(new Date(task.parts[deadInd - 1]), new Date(task.parts[deadInd])))
+      } else{
+        return Math.abs(differenceInDays(new Date(2019, 0, 1, 0, 0), new Date(task.parts[deadInd])))
+      }
     },
-    getWidth() {
-      
+    getDep(dead) {
+      return Object.keys(this.process.parts[dead]).map(taskName => ({
+        name: taskName,
+        status: null
+      }))
     },
     closeInfo() {
       this.isUserTwo = false
