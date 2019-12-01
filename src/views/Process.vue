@@ -1,30 +1,5 @@
 <template lang="pug">
-.graph 
-  a-modal(:title='dep.name', v-model='isOpenDep', :footer="null" :width='1000')
-    .modal
-      DocPreview
-      .info
-        a-button.btn(@click='$store.commit("openDocPreview")') Просмотр документа
-        .headline Дедлайн
-        .text 03.06.2019
-        .headline Статус
-        .text Отклонен
-        .headline Описание
-        .text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      .users
-        .headline Подэтап 1
-        a-tooltip(v-for='user in dep.users' :title='user.docs')
-          .user(@click='isUserTwo = true')
-            span {{user.name}}
-            i.material-icons.icon.green(v-if='user.status == "success"') done
-            i.material-icons.icon.red(v-else) close
-      .users-2nd
-        .headline(v-if='isUserTwo')  Подэтап 2
-        a-tooltip(v-if='isUserTwo' v-for='user in dep.users' :title='user.docs')
-          .user(@click='isUserTwo = true')
-            span {{user.name}}
-            i.material-icons.icon.green(v-if='user.status == "success"') done
-            i.material-icons.icon.red(v-else) close
+.graph
   .graph-sidebar
     .task(v-for='task in tasks') {{task.name}}
   .body
@@ -35,90 +10,30 @@
           .days
             .day(v-for='day in getDays(index)') {{day}}
     .inner
-      .task(v-for='(task, taskInd) in tasks' :style='{ paddingLeft: task.start*34 + "px" }')
-        .department(v-for='(dep, depInd) in task.departments' :style='{ minWidth: dep.days*34 + "px", background: getBg(dep.status) }' @click='openDep(depInd, taskInd)') {{dep.name}}
+      .task(v-for='(task, taskInd) in tasks' :style='{ paddingLeft: task.start*34 + "px" }' @click='openDep(taskInd)')
+        .part(v-for='(dead, deadInd) in task.parts' :style='{ minWidth: getWidth(taskInd, deadInd)*34 + "px"}') 
+          .department(v-for='dep in getDep(taskInd, dead)' :style='{ width: getWidth(taskInd, deadInd)*34 + "px", background: getBg(dep.status) }') {{dep.name}}
 </template>
 <script>
 import getDaysInMonth from 'date-fns/getDaysInMonth'
-import DocPreview from '../components/DocPreview'
-
+import differenceInDays from 'date-fns/differenceInDays'
+// import _ from 'lodash'
 export default {
-  components: {DocPreview},
-  data(){
-    return {
-      isOpenDep: false,
-      isUserTwo: false,
-      depInd: null,
-      taskInd: null,
-      tasks: [
-        {
-          name: 'Задача 1',
-          start: 10,
-          departments: [
-            {
-              name: 'Department 1',
-              status: null,
-              days: 15
-            },{
-              name: 'Department 2',
-              status: 'done',
-              days: 19
-            },{
-              name: 'Department 3',
-              status: null,
-              days: 20
-            },{
-              name: 'Department 4',
-              status: null,
-              days: 10
-            },
-          ]
-        },{
-          name: 'Задача 2',
-          start: 13,
-          departments: [
-            {
-              name: 'Department 1',
-              status: "fail",
-              days: 10,
-              users: [
-                {
-                  name: "Департамент",
-                  status: 'success',
-                  docs: "123"
-                },{
-                  name: "Департамент",
-                  status: 'success',
-                  docs: "123"
-                },{
-                  name: "Департамент",
-                  status: 'success',
-                  docs: "123"
-                },{
-                  name: "Департамент",
-                  status: 'fail',
-                  docs: "123"
-                },
-              ]
-            },{
-              name: 'Department 2',
-              status: null,
-              days: 12
-            },{
-              name: 'Department 3',
-              status: null,
-              days: 13
-            },{
-              name: 'Department 4',
-              status: null,
-              days: 14
-            },
-          ]
-        }
-      ]
-    }
-  },
   computed: {
+    tasks(){
+      let list = []
+      const { data } = this.$store.state
+      data.forEach(d => {
+        list.push({
+          name: d.name,
+          parts: Object.keys(d.tasks).sort(function(a,b){
+            return new Date(a) - new Date(b);
+          }),
+          start: 0
+        })
+      });
+      return list
+    },
     dep(){
       const { depInd, taskInd, tasks } = this
       if(depInd != null && taskInd != null) {
@@ -136,12 +51,24 @@ export default {
     }
   },
   methods: {
-    openDep(ind, taskInd) {
-      if(this.tasks[taskInd].departments[ind].status == "fail") {
-        this.depInd = ind
-        this.taskInd = taskInd
-        this.isOpenDep = true
+    getWidth(taskInd, deadInd ) {
+      const task = this.tasks[taskInd]
+      
+      if (deadInd) {
+        return Math.abs(differenceInDays(new Date(task.parts[deadInd - 1]), new Date(task.parts[deadInd])))
+      } else{
+        return Math.abs(differenceInDays(new Date(2019, 0, 1, 0, 0), new Date(task.parts[deadInd])))
       }
+    },
+    getDep(ind, dead) {
+      const { data } = this.$store.state
+      return Object.keys(data[ind].tasks[dead]).map(taskName => ({
+        name: taskName,
+        status: null
+      }))
+    },
+    openDep(ind) {
+      this.$router.push('/processes/' + ind)
     },
     getBg(status) {
       switch(status) {
@@ -154,70 +81,13 @@ export default {
       }
     },
     getDays(ind) {
-      return getDaysInMonth(new Date(1,ind,2019))
+      // console.log(ind)
+      return getDaysInMonth(new Date(2019, ind))
     }
   }
 }
 </script>
 <style lang="sass" scoped>
-.modal
-  display: flex
-  .info
-    flex: 1
-    padding-right: 16px
-    border-right: 1px solid #e8e8e8
-    .btn
-      margin-bottom: 16px
-    .headline 
-      font-weight: 500
-      font-size: 18px
-    .text
-      margin-top: 8px
-      margin-bottom: 32px
-  .users
-    flex: 1
-    padding-right: 16px
-    border-right: 1px solid #e8e8e8
-    .headline 
-      font-weight: 500
-      font-size: 18px
-      margin-left: 32px
-      margin-bottom: 32px
-    .user
-      margin-left: 100px
-      margin-bottom: 32px
-      display: flex
-      width: fit-content
-      align-items: center
-      &:hover
-        cursor: pointer
-      .green
-        color: #43A047
-      .red
-        color: #E53935
-      .icon
-        margin-left: 16px
-  .users-2nd
-    flex: 1
-    .headline 
-      font-weight: 500
-      font-size: 18px
-      margin-left: 32px
-      margin-bottom: 32px
-    .user
-      margin-left: 100px
-      margin-bottom: 32px
-      display: flex
-      width: fit-content
-      align-items: center
-      &:hover
-        cursor: pointer
-      .green
-        color: #43A047
-      .red
-        color: #E53935
-      .icon
-        margin-left: 16px
 .graph 
   display: flex
   height: calc(100% - 48px)
@@ -230,7 +100,7 @@ export default {
     padding-top: 61px
     width: 200px
     .task
-      height: 60px
+      height: 183px
       display: flex
       align-items: center
       margin-bottom: 16px
@@ -271,24 +141,26 @@ export default {
     padding-top: 16px
     .task
       width: 100%
-      height: 60px
+      height: 183px
       display: flex
       position: relative
       z-index: 10
       white-space: nowrap
       margin-bottom: 16px
-      .department
-        height: 100%
-        display: flex
-        align-items: center
-        justify-content: center
-        border-right: 1px solid #fff
-        transition: transform .3s
-        &:hover
-          cursor: pointer
-          transform: scale(1.1)
+      transition: transform .3s
+      .part
         &:last-child
-          border-right: none
+          .department
+            border-right: none
+      .department
+        height: 60px
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: normal
+        font-size: 12px
+        padding-left: 3px
+        border-right: 1px solid #fff
+        margin-bottom: 1px
   .body
     // border-left: 1px solid #000
     // border-right: 1px solid #000

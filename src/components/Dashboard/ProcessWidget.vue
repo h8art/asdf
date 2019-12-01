@@ -9,12 +9,13 @@
         .period-variant(:class='{ "active": period == 3 }' @click='period = 3') Месяц
     .list
       .task(v-for='task in tasks')
-        .name {{task.name}}
-        .deadline {{task.deadline}}
-        a-button-group
-          a-button(size='small') Задачи
-          a-button(size='small') Таймлайн
-          a-button(size='small') Инфо
+        .inner
+          .name {{task.name}}
+          a-button-group
+            a-button(size='small') Задачи
+            a-button(size='small') Таймлайн
+            a-button(size='small') Инфо
+        a-progress.prc(:percent="task.percent" :status="task.error?'exception':(task.percent==100?'success':'')") 
 </template>
 <script>
 export default {
@@ -23,30 +24,11 @@ export default {
       period: 1,
       tasks: [
         {
-          name: 'Уникальная задача в своем роде',
-          deadline: "01.12.2019"
-        },{
-          name: 'Уникальная задача в своем роде',
-          deadline: "01.12.2019"
-        },{
-          name: 'Уникальная задача в своем роде',
-          deadline: "01.12.2019"
-        },{
-          name: 'Уникальная задача в своем роде',
-          deadline: "01.12.2019"
-        },{
-          name: 'Уникальная задача в своем роде',
-          deadline: "01.12.2019"
-        },{
-          name: 'Уникальная задача в своем роде',
-          deadline: "01.12.2019"
-        },{
-          name: 'Уникальная задача в своем роде',
-          deadline: "01.12.2019"
-        },{
-          name: 'Уникальная задача в своем роде',
-          deadline: "01.12.2019"
-        },
+          name: 'Составление проекта бюджета города',
+          deadline: "01.12.2019",
+          percent: 30,
+          error: false
+        }
       ]
     }
   }
@@ -62,12 +44,15 @@ export default {
   .list
     margin-top: 16px
     .task
-      display: flex
-      height: 45px
-      padding: 0 16px
+      min-height: 45px
+      padding: 16px
       border-bottom: 1px solid #ecf2fb
-      justify-content: space-between
-      align-items: center
+      .prc
+        padding: 8px 0
+      .inner
+        display: flex
+        justify-content: space-between
+        align-items: center
       &:last-child
         border-bottom: 0px
   .header

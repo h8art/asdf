@@ -1,12 +1,18 @@
 <template lang="pug">
   .toolbar
     .logo
-      img(src='/dep.jpg')
+      img(src='/sires.svg')
     .spacer
     .icon
       i.material-icons search
-    .icon
-      i.material-icons notifications_none
+    a-popover(placement='bottom')
+      template(slot='content')
+        p Content
+        p Content
+      template(slot='title')
+        span Title
+      .icon
+        i.material-icons notifications_none
     .avatar
 </template>
 <style lang="sass" scoped>
@@ -25,7 +31,7 @@
     i
       line-height: 32px
   .logo
-    height: 90%
+    height: 50%
     img
       height: 100%
   .avatar

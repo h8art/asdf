@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="55px" height="13px" viewBox="0 0 55 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>SIRES</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#5FCBE1" offset="0%"></stop>
+            <stop stop-color="#6173D6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Rubik-Regular, Rubik" font-size="16" font-weight="normal" letter-spacing="2.8">
+        <g id="Edit-subset-modal-Copy" transform="translate(-198.000000, -113.000000)" fill="url(#linearGradient-1)">
+            <text id="SIRES">
+                <tspan x="198" y="125">SIRES</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

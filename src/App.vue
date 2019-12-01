@@ -18,6 +18,8 @@ export default {
 }
 </script>
 <style lang="sass">
+.flip-list-move
+  transition: transform 1s
 body
   margin: 0
   font-family: "Rubik"
